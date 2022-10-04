@@ -6856,7 +6856,54 @@ You can download the PDF and Epub version of this repository from the latest run
      **[⬆ Back to Top](#table-of-contents)**
 
 390. ### What is the purpose of queueMicrotask
+      1. The main purpose of the Microtask queue is to store the tasks that are to be executed after the main thread is completely executed, it executes before the tasks stored in callback queue/task queue.
+      2. Priority order: main thread > microtask queue > callback queue 
+      2. It has higher priority than tasks  in the callback queue.
+      3. It stores Promise.resolve, Promise.reject, MutationObservers, interactionObservers whereas Callback queue stores the callback function of setTimeout , setInterval function.
 
+      ##### Example
+
+      ```javascript
+      setTimeout(()=>console.log(1));  // it will execute fourth
+
+      setTimeout(() => console.log(2));  // it will execute fifth 
+
+      let p = new Promise((resolve , reject) =>{
+        resolve(); 
+      });
+
+      console.log(3)   // it will execute first
+
+      p.then(()=>{
+          console.log(4); // it will execute second 
+      })
+
+      p.then(()=>{
+          console.log(5);  // it will execute third
+      })
+
+      setTimeout(()=>{
+          console.log(6); // it will execute seventh 
+      })
+      ```
+
+      ##### Code Execution
+        1. When the 1st and 2nd statements execute, since they are setTimeout functions their callback functions will be stored in the callback queue. We will have two callback functions in our callback queue.
+        ![Screenshot](images/microtask-1.jpg)
+        2. In the 3rd statement we have defined a promise and are calling the resolve function.
+        3. In the 4th statement we are printing output "3" on the console.
+        4. When 5th and 6th statements execute, the microtask of promise will be added in the microtask queue and We will have two microtasks in our queue.
+        ![Screenshot](images/microtask-2.jpg)
+        5. In the 7th statement we have setTimeout so we will have three callback functions in our callback queue.
+        ![Screenshot](images/microtask-3.jpg)
+        6. Since our main thread is free now,it will execute the microtask queue functions in FIFO(First In First Out) order, hence 4 , 5 will be printed on the console.
+        7. Finally as execution of the microtask queue is concluded,  the main thread will execute the callback function of the callback queue and we will get output as 1, 2 ,6 on the console.
+         
+
+      #### Output
+      ```
+        3 4 5 1 2 6
+      ```
      **[⬆ Back to Top](#table-of-contents)**
 
 391. ### How do you use javascript libraries in typescript file
