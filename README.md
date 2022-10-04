@@ -6888,13 +6888,13 @@ You can download the PDF and Epub version of this repository from the latest run
       ```
 
       ##### Code Execution
-        1. When the 1st and 2nd statements execute, since they are setTimeout functions their callback functions will be stored in the callback queue. We will have two callback functions in our callback queue.
+        1. When the 1st and 2nd statements execute, since they are setTimeout functions their callback functions will be stored in the callback queue. We will have two callback functions in our callback queue.<br/>
         ![Screenshot](images/microtask-1.jpg)
         2. In the 3rd statement we have defined a promise and are calling the resolve function.
         3. In the 4th statement we are printing output "3" on the console.
-        4. When 5th and 6th statements execute, the microtask of promise will be added in the microtask queue and We will have two microtasks in our queue.
+        4. When 5th and 6th statements execute, the microtask of promise will be added in the microtask queue and We will have two microtasks in our queue. <br/>
         ![Screenshot](images/microtask-2.jpg)
-        5. In the 7th statement we have setTimeout so we will have three callback functions in our callback queue.
+        5. In the 7th statement we have setTimeout so we will have three callback functions in our callback queue.<br/>
         ![Screenshot](images/microtask-3.jpg)
         6. Since our main thread is free now,it will execute the microtask queue functions in FIFO(First In First Out) order, hence 4 , 5 will be printed on the console.
         7. Finally as execution of the microtask queue is concluded,  the main thread will execute the callback function of the callback queue and we will get output as 1, 2 ,6 on the console.
